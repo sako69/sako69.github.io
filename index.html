@@ -11,14 +11,14 @@
 
 <!-- ═══════════════ NAV ═══════════════ -->
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('accueil')">Y<span>.</span>AMOR</a>
+  <a class="nav-logo" href="#" onclick="showPage('accueil');return false;">Y<span>.</span>AMOR</a>
   <ul class="nav-links">
-    <li><a href="#" onclick="showPage('accueil')" id="nav-accueil" class="active">ACCUEIL</a></li>
-    <li><a href="#" onclick="showPage('cv')" id="nav-cv">CV</a></li>
-    <li><a href="#" onclick="showPage('ap')" id="nav-ap">AP</a></li>
-    <li><a href="#" onclick="showPage('stages')" id="nav-stages">STAGES</a></li>
-    <li><a href="#" onclick="showPage('veille')" id="nav-veille">VEILLE TECH</a></li>
-    <li><a href="#" onclick="showPage('contact')" id="nav-contact">CONTACT</a></li>
+    <li><a href="#" onclick="showPage('accueil');return false;" id="nav-accueil" class="active">ACCUEIL</a></li>
+    <li><a href="#" onclick="showPage('cv');return false;" id="nav-cv">CV</a></li>
+    <li><a href="#" onclick="showPage('ap');return false;" id="nav-ap">AP</a></li>
+    <li><a href="#" onclick="showPage('stages');return false;" id="nav-stages">STAGES</a></li>
+    <li><a href="#" onclick="showPage('veille');return false;" id="nav-veille">VEILLE TECH</a></li>
+    <li><a href="#" onclick="showPage('contact');return false;" id="nav-contact">CONTACT</a></li>
   </ul>
 </nav>
 
@@ -62,8 +62,13 @@
         <p>Tendances &amp; actualités tech</p>
         <span class="nav-card-arrow">→</span>
       </div>
+      <div class="nav-card" onclick="showPage('contact')">
+        <div class="nav-card-icon">✉️</div>
+        <h3>Contact</h3>
+        <p>Me contacter · Réseaux · Stage</p>
+        <span class="nav-card-arrow">→</span>
+      </div>
     </div>
-    
   </div>
   <footer>
     Portfolio de <strong>Yassine AMOR</strong> · BTS SIO SISR · Lycée La Martinière Duchère · 2025–2027
@@ -239,6 +244,8 @@
         <a href="journal-stage-spie.pdf" download class="btn btn-ghost btn-sm">⬇ Télécharger</a>
       </div>
 
+
+    </div><!-- end stage-card BTS A1 -->
 
     <!-- STAGE BTS ANNÉE 2 -->
     <div class="stage-coming">
@@ -662,31 +669,24 @@ const screenshotsHTML = ap.screenshots.map((s, i) => {
   }
 
   /* ── NAVIGATION ── */
+  function _applyPage(id, apId) {
+    document.querySelectorAll('.page, #page-ap-detail').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    if (id === 'ap-detail' && apId) {
+      document.getElementById('nav-ap').classList.add('active');
+      document.getElementById('ap-detail-content').innerHTML = renderApDetail(apId);
+      document.getElementById('page-ap-detail').classList.add('active');
+    } else {
+      var pageEl = document.getElementById('page-' + id);
+      var navEl  = document.getElementById('nav-' + id);
+      if (pageEl) pageEl.classList.add('active');
+      if (navEl)  navEl.classList.add('active');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   function showApDetail(id) {
-    document.querySelectorAll('.page, #page-ap-detail').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-    document.getElementById('nav-ap').classList.add('active');
-    document.getElementById('ap-detail-content').innerHTML = renderApDetail(id);
-    document.getElementById('page-ap-detail').classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    history.pushState({ page: 'ap-detail', apId: id }, '', '#ap-' + id);
+    _applyPage('ap-detail', id);
   }
 
-  function closeApDetail() {
-    document.querySelectorAll('.page, #page-ap-detail').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-    document.getElementById('page-ap').classList.add('active');
-    document.getElementById('nav-ap').classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function showPage(id) {
-    document.querySelectorAll('.page, #page-ap-detail').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-    document.getElementById('page-' + id).classList.add('active');
-    document.getElementById('nav-' + id).classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-</script>
-
-</body>
-</html>
