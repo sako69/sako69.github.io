@@ -690,3 +690,46 @@ const screenshotsHTML = ap.screenshots.map((s, i) => {
     _applyPage('ap-detail', id);
   }
 
+  function closeApDetail() {
+    history.pushState({ page: 'ap' }, '', '#ap');
+    _applyPage('ap');
+  }
+
+  function showPage(id) {
+    history.pushState({ page: id }, '', '#' + id);
+    _applyPage(id);
+  }
+
+  // Gestion du bouton retour / avant du navigateur
+  window.addEventListener('popstate', function(e) {
+    if (e.state) {
+      _applyPage(e.state.page, e.state.apId || null);
+    } else {
+      _applyPage('accueil');
+    }
+  });
+
+  // Au chargement, lire le hash si présent
+  (function() {
+    var hash = window.location.hash.replace('#', '');
+    if (hash && hash.startsWith('ap-') && hash.length > 3) {
+      var apId = hash.replace('ap-', '');
+      if (apData[apId]) {
+        history.replaceState({ page: 'ap-detail', apId: apId }, '', window.location.hash);
+        _applyPage('ap-detail', apId);
+        return;
+      }
+    }
+    var validPages = ['accueil','cv','ap','stages','veille','contact'];
+    if (hash && validPages.includes(hash)) {
+      history.replaceState({ page: hash }, '', '#' + hash);
+      _applyPage(hash);
+    } else {
+      history.replaceState({ page: 'accueil' }, '', '#accueil');
+      _applyPage('accueil');
+    }
+  })();
+</script>
+
+</body>
+</html>
